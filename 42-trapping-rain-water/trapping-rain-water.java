@@ -1,21 +1,20 @@
 class Solution {
     public int trap(int[] nums) {
-        int n=nums.length;
+        int n = nums.length;
+        int water=0;
 
         Stack<Integer> st = new Stack<>();
 
-        int water=0;
-
         for(int i=0; i<n; i++){
-            while(!st.isEmpty() &&  nums[i] > nums[st.peek()]) {
-                int top = st.pop();
+            while(!st.isEmpty() && nums[i] > nums[st.peek()]){
+                int top = nums[st.pop()];
 
-                if(st.isEmpty()) break;
+                if(st.isEmpty()) continue;
 
-                int height = Math.min(nums[i], nums[st.peek()]) - nums[top];
+                int height = Math.min(nums[i], nums[st.peek()]) - top;
                 int width = i - st.peek() - 1;
 
-                water += width * height;
+                water += height * width;
             }
 
             st.push(i);

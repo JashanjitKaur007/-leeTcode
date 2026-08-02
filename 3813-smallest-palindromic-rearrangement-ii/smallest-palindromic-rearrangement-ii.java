@@ -1,102 +1,82 @@
 class Solution {
-    int k;
 
-/*
-    nCr =     n!
-          ____________
-           r! (n-r) !
-*/
+    public long nCr (int N, int R, int k){
+        R = Math.min(R, N-R);
 
-    // public int nCr (int slot, int count){
-    public long nCr (int n, int r){
-        r = Math.min(r, n - r);
+        long ways = 1;
+        for(int r=1; r<=R; r++){
+            // ways = ways * ((N - r + 1) / r);
+            ways = ways * (N - r + 1) / r;
 
-        long res=1;
-
-        for(int i=1; i<=r; i++){
-            res = res * (n - r + i) / i;
-
-            if(res >= k) return k;  // early return
+            if(ways >= k) break;
         }
 
-        return res;
+        return ways;
     }
+    
 
-
-    public String smallestPalindrome(String s, int K) {
-        k = K;
+    public String smallestPalindrome(String s, int k) {
         int n=s.length();
 
-        int freq[] = new int[26];
+        int[] freq = new int[26];
         for(char ch: s.toCharArray()){
-            freq[ch-'a'] ++ ;
+            freq[ch-'a']++;
         }
 
-        int mid=-1;
+        // char mid = ' ';
+        char mid = '\0';
         for(int i=0; i<26; i++){
-            if(mid == -1){
-                if(freq[i] % 2 == 1) mid = i;
-            }
-
-            freq[i] /= 2;
+            if(freq[i] % 2 == 1) mid = (char) ('a' + i);
+            freq[i] /=2;
         }
 
-
-        StringBuilder halfResult = new StringBuilder();
-        int half = n/2;        
+        StringBuilder halfResult = new StringBuilder(); 
+        int half=n/2;
 
         for(int i=0; i<half; i++){
             boolean placeholder = false;
 
             for(int j=0; j<26; j++){
-                if (freq[j] == 0) continue;
+                if(freq[j] == 0) continue;
 
                 freq[j] -- ;
-
-                // ways = remaining slots / freq[i] > 1 ;
-                int letters = half - i - 1;
+                int slots = half - i - 1;
                 long ways = 1;
 
-                // ways *= nCr (letters, freq[j]);
-                // letters -= freq[j];
-                for (int c = 0; c < 26; c++) {
-                    if (freq[c] > 0) {
-                        ways *= nCr(letters, freq[c]);
-                        letters -= freq[c];
+                for(int c=0; c<26; c++){
+                    if(freq[c] == 0) continue;
 
-                        if(ways >= k){
-                            ways = k;
-                            break;
-                        }
+                    ways *= nCr(slots, freq[c], k);
+                    slots -= freq[c];
+
+                    if(ways >= k){
+                        break;
                     }
                 }
 
-// nCr = total / count of ch * remaining toal / count of ch .....
-
                 if(ways >= k){
-                    halfResult.append((char)('a'+j));
+                    halfResult.append((char) ('a'+j));
                     placeholder = true;
                     break;
                 }
-
-                k -= (int) ways;
-                freq[j] ++ ;
-                
+                else{
+                    k -= ways;
+                    freq[j] ++ ;
+                }
             }
 
-            if(placeholder == false) return "";
+            if(!placeholder) return "";
         }
-
-
-        // halfResult + mid + reverse of half;
 
         StringBuilder ans = new StringBuilder();
         ans.append(halfResult);
-        if(n%2==1){
-            ans.append((char) ('a' + mid));
-        }
-        ans.append(new StringBuilder(halfResult).reverse());
-
+        // if(mid!='') ans.append(mid);
+        // Null Check: If ch is a boxed Character object or a string, checking ch != null or ch.length() > 0 is used instead.
+        
+        // if(mid!=null) ans.append(mid);
+        if(mid != '\0') ans.append(mid);
+        ans.append(halfResult.reverse());
+        
         return ans.toString();
     }
 }

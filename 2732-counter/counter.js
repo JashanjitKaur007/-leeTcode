@@ -1,22 +1,14 @@
+
 var createCounter = function(n) {
 
-    // n++ happens only once when createCounter(n) is called.
-    // n++;        
+    let store = n;
 
-    // Your code has one key issue: sum() always returns n + 1, but it doesn't update n.
-    // function sum (n) {
-    //     return n+1;
-    // };
+    function call() {
+        return store++;
+    };
 
-    function sum () {
-        // return n + 1;
-        return n ++ ;
-    }
-
-    // return sum();
-    return sum;
+    return call;
 };
-
 
 /** 
  * const counter = createCounter(10)

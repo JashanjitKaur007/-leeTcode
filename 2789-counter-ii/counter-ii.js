@@ -1,32 +1,24 @@
-// obj + closure
-
-// var createCounter = function(init) {
-//     let store = init;
-
-//     function increment() {
-//         return ++store;
-//     }
-//     function decrement() {
-//         return --store;
-//     }
-//     function reset() {
-//         return (store = init);
-//     }
-
-//     return {increment, decrement, reset};
-// };
-
-
+/**
+ * @param {integer} init
+ * @return { increment: Function, decrement: Function, reset: Function }
+ */
 var createCounter = function(init) {
+
     let store = init;
 
-    return {
-        increment:() => ++ store,
-        decrement:() => -- store,
-        reset:() => (store = init),
-    }
+    return{
+        increment: () => {
+            return ++ store;
+        },
 
-    // return {increment, decrement, reset};
+        reset: () => {
+            return (store = init);
+        },
+
+        decrement: () => {
+            return -- store;
+        } 
+    };
 };
 
 /**

@@ -1,29 +1,17 @@
-/**
- * @param {integer} init
- * @return { increment: Function, decrement: Function, reset: Function }
- */
+
 var createCounter = function(init) {
 
-    let store = init;
-
-    return{
-        increment: () => {
-            return ++ store;
+    let num = init;
+    return {
+        increment: function () {
+            return ++num;
         },
-
-        reset: () => {
-            return (store = init);
+        reset: function () {
+            num = init;
+            return init;
         },
-
-        decrement: () => {
-            return -- store;
-        } 
-    };
+        decrement: function () {
+            return --num;
+        }
+    }
 };
-
-/**
- * const counter = createCounter(5)
- * counter.increment(); // 6
- * counter.reset(); // 5
- * counter.decrement(); // 4
- */
